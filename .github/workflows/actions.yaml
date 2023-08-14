@@ -1,0 +1,41 @@
+name: Actions
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v4
+        id: python
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Lint with Black
+        run: black --check src
+
+      - name: Lint with mypy
+        run: mypy --strict src
+
+      - name: Lint with pylint
+        run: pylint src --rcfile pylint.rc
+
+      - name: Lint with isort
+        run: isort --check-only --profile black src
