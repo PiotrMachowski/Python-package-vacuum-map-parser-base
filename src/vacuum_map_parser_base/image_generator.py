@@ -88,9 +88,7 @@ class ImageGenerator:
         draw = ImageDraw.Draw(image, "RGBA")
         l, t, r, b = draw.textbbox((0, 0), text)
         w, h = r - l, b - t
-        draw.text(
-            ((image.size[0] - w) / 2, (image.size[1] - h) / 2), text, fill=text_color
-        )
+        draw.text(((image.size[0] - w) / 2, (image.size[1] - h) / 2), text, fill=text_color)
         return image
 
     def _draw_vacuum_path(self, map_data: MapData) -> None:
@@ -167,9 +165,7 @@ class ImageGenerator:
             for wall in walls:
                 draw.line(wall.to_img(image.dimensions).as_list(), color, width=2)
 
-        ImageGenerator._draw_on_new_layer(
-            image, draw_func, 1, ImageGenerator._use_transparency(color)
-        )
+        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(color))
 
     def _draw_zones(self, map_data: MapData) -> None:
         if map_data.zones is None or map_data.image is None:
@@ -187,45 +183,35 @@ class ImageGenerator:
         fill = self._get_color(SupportedColor.CHARGER)
         outline = self._get_color(SupportedColor.CHARGER_OUTLINE)
         radius = self._get_size(Size.CHARGER_RADIUS)
-        ImageGenerator._draw_pieslice(
-            map_data.image, map_data.charger, radius, outline, fill
-        )
+        ImageGenerator._draw_pieslice(map_data.image, map_data.charger, radius, outline, fill)
 
     def _draw_obstacles(self, map_data: MapData) -> None:
         if map_data.obstacles is None or map_data.image is None:
             return
         color = self._get_color(SupportedColor.OBSTACLE)
         radius = self._get_size(Size.OBSTACLE_RADIUS)
-        ImageGenerator._draw_all_obstacles(
-            map_data.image, map_data.obstacles, radius, color
-        )
+        ImageGenerator._draw_all_obstacles(map_data.image, map_data.obstacles, radius, color)
 
     def _draw_ignored_obstacles(self, map_data: MapData) -> None:
         if map_data.ignored_obstacles is None or map_data.image is None:
             return
         color = self._get_color(SupportedColor.IGNORED_OBSTACLE)
         radius = self._get_size(Size.IGNORED_OBSTACLE_RADIUS)
-        ImageGenerator._draw_all_obstacles(
-            map_data.image, map_data.ignored_obstacles, radius, color
-        )
+        ImageGenerator._draw_all_obstacles(map_data.image, map_data.ignored_obstacles, radius, color)
 
     def _draw_obstacles_with_photo(self, map_data: MapData) -> None:
         if map_data.obstacles_with_photo is None or map_data.image is None:
             return
         color = self._get_color(SupportedColor.OBSTACLE_WITH_PHOTO)
         radius = self._get_size(Size.OBSTACLE_WITH_PHOTO_RADIUS)
-        ImageGenerator._draw_all_obstacles(
-            map_data.image, map_data.obstacles_with_photo, radius, color
-        )
+        ImageGenerator._draw_all_obstacles(map_data.image, map_data.obstacles_with_photo, radius, color)
 
     def _draw_ignored_obstacles_with_photo(self, map_data: MapData) -> None:
         if map_data.ignored_obstacles_with_photo is None or map_data.image is None:
             return
         color = self._get_color(SupportedColor.IGNORED_OBSTACLE_WITH_PHOTO)
         radius = self._get_size(Size.IGNORED_OBSTACLE_WITH_PHOTO_RADIUS)
-        ImageGenerator._draw_all_obstacles(
-            map_data.image, map_data.ignored_obstacles_with_photo, radius, color
-        )
+        ImageGenerator._draw_all_obstacles(map_data.image, map_data.ignored_obstacles_with_photo, radius, color)
 
     def _draw_vacuum_position(self, map_data: MapData) -> None:
         if map_data.vacuum_position is None or map_data.image is None:
@@ -233,9 +219,7 @@ class ImageGenerator:
         color = self._get_color(SupportedColor.ROBO)
         outline = self._get_color(SupportedColor.ROBO_OUTLINE)
         radius = self._get_size(Size.VACUUM_RADIUS)
-        ImageGenerator._draw_vacuum(
-            map_data.image, map_data.vacuum_position, radius, outline, color
-        )
+        ImageGenerator._draw_vacuum(map_data.image, map_data.vacuum_position, radius, outline, color)
 
     def _draw_room_names(self, map_data: MapData) -> None:
         if map_data.rooms is None or map_data.image is None:
@@ -279,18 +263,11 @@ class ImageGenerator:
 
     @staticmethod
     def _draw_layer(map_data: MapData, layer_name: str) -> None:
-        if (
-            map_data.image is not None
-            and layer_name in map_data.image.additional_layers
-        ):
-            ImageGenerator._draw_layer_with_alpha(
-                map_data.image, map_data.image.additional_layers[layer_name]
-            )
+        if map_data.image is not None and layer_name in map_data.image.additional_layers:
+            ImageGenerator._draw_layer_with_alpha(map_data.image, map_data.image.additional_layers[layer_name])
 
     @staticmethod
-    def _draw_all_obstacles(
-        image: ImageData, obstacles: list[Obstacle], radius: float, color: Color
-    ) -> None:
+    def _draw_all_obstacles(image: ImageData, obstacles: list[Obstacle], radius: float, color: Color) -> None:
         for obstacle in obstacles:
             ImageGenerator._draw_circle(image, obstacle, radius, color, color)
 
@@ -308,9 +285,7 @@ class ImageGenerator:
         return any(len(color) > 3 for color in colors)
 
     @staticmethod
-    def _draw_vacuum(
-        image: ImageData, vacuum_pos: Point, r: float, outline: Color, fill: Color
-    ) -> None:
+    def _draw_vacuum(image: ImageData, vacuum_pos: Point, r: float, outline: Color, fill: Color) -> None:
         def draw_func(draw: ImageDrawType) -> None:
             if vacuum_pos.a is None:
                 vacuum_pos.a = 0
@@ -356,41 +331,29 @@ class ImageGenerator:
             coords = [x - r2, y - r2, x + r2, y + r2]
             draw.ellipse(coords, outline=half_color, fill=half_color)
 
-        ImageGenerator._draw_on_new_layer(
-            image, draw_func, 1, ImageGenerator._use_transparency(outline, fill)
-        )
+        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(outline, fill))
 
     @staticmethod
-    def _draw_circle(
-        image: ImageData, center: Point, r: float, outline: Color, fill: Color
-    ) -> None:
+    def _draw_circle(image: ImageData, center: Point, r: float, outline: Color, fill: Color) -> None:
         def draw_func(draw: ImageDrawType) -> None:
             point = center.to_img(image.dimensions)
             coords = [point.x - r, point.y - r, point.x + r, point.y + r]
             draw.ellipse(coords, outline=outline, fill=fill)
 
-        ImageGenerator._draw_on_new_layer(
-            image, draw_func, 1, ImageGenerator._use_transparency(outline, fill)
-        )
+        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(outline, fill))
 
     @staticmethod
-    def _draw_pieslice(
-        image: ImageData, position: Point, r: float, outline: Color, fill: Color
-    ) -> None:
+    def _draw_pieslice(image: ImageData, position: Point, r: float, outline: Color, fill: Color) -> None:
         def draw_func(draw: ImageDrawType) -> None:
             point = position.to_img(image.dimensions)
             angle = -position.a if position.a is not None else 0
             coords = (point.x - r, point.y - r), (point.x + r, point.y + r)
             draw.pieslice(coords, angle + 90, angle - 90, outline=outline, fill=fill)
 
-        ImageGenerator._draw_on_new_layer(
-            image, draw_func, 1, ImageGenerator._use_transparency(outline, fill)
-        )
+        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(outline, fill))
 
     @staticmethod
-    def _draw_areas(
-        image: ImageData, areas: list[Area], fill: Color, outline: Color
-    ) -> None:
+    def _draw_areas(image: ImageData, areas: list[Area], fill: Color, outline: Color) -> None:
         if len(areas) == 0:
             return
 
@@ -403,9 +366,7 @@ class ImageGenerator:
 
             ImageGenerator._draw_on_new_layer(image, draw_func, 1, use_transparency)
 
-    def _draw_path(
-        self, image: ImageData, path: Path, path_width: float, color: Color
-    ) -> None:
+    def _draw_path(self, image: ImageData, path: Path, path_width: float, color: Color) -> None:
         if len(path.path) < 1:
             return
 
@@ -432,9 +393,7 @@ class ImageGenerator:
                             draw.pieslice(coords, 0, 360, outline=color, fill=color)
                         s = e
 
-        ImageGenerator._draw_on_new_layer(
-            image, draw_func, scale, ImageGenerator._use_transparency(color)
-        )
+        ImageGenerator._draw_on_new_layer(image, draw_func, scale, ImageGenerator._use_transparency(color))
 
     @staticmethod
     def _draw_text(
@@ -460,9 +419,7 @@ class ImageGenerator:
                 w, h = r - l, b - t
                 draw.text((x - w / 2, y - h / 2), text, font=font, fill=color)
 
-        ImageGenerator._draw_on_new_layer(
-            image, draw_func, 1, ImageGenerator._use_transparency(color)
-        )
+        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(color))
 
     @staticmethod
     def _draw_on_new_layer(

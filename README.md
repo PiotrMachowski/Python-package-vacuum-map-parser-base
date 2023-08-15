@@ -14,7 +14,7 @@
 [pypi_releases_shield]: https://img.shields.io/pypi/v/vacuum-map-parser-base
 
 [pypi_downloads]: https://pepy.tech/project/vacuum-map-parser-base
-[pypi_downloads_shield]: https://pepy.tech/badge/vacuum-map-parser-base/month
+[pypi_downloads_shield]: https://static.pepy.tech/badge/vacuum-map-parser-base
 
 # Vacuum map parser - base
 
@@ -24,7 +24,7 @@ Available implementations:
 * [`vacuum-map-parser-roborock`](https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-roborock)
 * [`vacuum-map-parser-viomi`](https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-viomi)
 * [`vacuum-map-parser-roidmi`](https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-roidmi)
-* [`vacuum-map-parser-viomi`](https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-viomi)
+* [`vacuum-map-parser-dreame`](https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-dreame)
 
 ## Installation
 

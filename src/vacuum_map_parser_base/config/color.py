@@ -121,9 +121,7 @@ class ColorsPalette:
     def get_color(self, color_name: SupportedColor) -> Color:
         return self._overriden_colors.get(
             color_name,
-            ColorsPalette.COLORS.get(
-                color_name, ColorsPalette.COLORS.get(SupportedColor.UNKNOWN, (0, 0, 0))
-            ),
+            ColorsPalette.COLORS.get(color_name, ColorsPalette.COLORS.get(SupportedColor.UNKNOWN, (0, 0, 0))),
         )
 
     def get_room_color(self, room_id: str | int) -> Color:
@@ -137,8 +135,6 @@ class ColorsPalette:
             key,
             ColorsPalette.ROOM_COLORS.get(
                 key,
-                ColorsPalette.ROOM_COLORS.get(
-                    str(self._random.randint(1, 16)), (0, 0, 0)
-                ),
+                ColorsPalette.ROOM_COLORS.get(str(self._random.randint(1, 16)), (0, 0, 0)),
             ),
         )

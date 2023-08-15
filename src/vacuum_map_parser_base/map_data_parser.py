@@ -30,9 +30,7 @@ class MapDataParser(ABC):
         self._sizes = sizes
         self._image_config = image_config
         self._texts = texts
-        self._image_generator = ImageGenerator(
-            palette, sizes, drawables, image_config, texts
-        )
+        self._image_generator = ImageGenerator(palette, sizes, drawables, image_config, texts)
 
     def create_empty(self, text: str) -> MapData:
         map_data = MapData()

@@ -139,11 +139,7 @@ class ImageData(OutputObject):
         self.additional_layers: dict[str, ImageType] = (
             {}
             if additional_layers is None
-            else {
-                name: layer
-                for name, layer in additional_layers.items()
-                if layer is not None
-            }
+            else {name: layer for name, layer in additional_layers.items() if layer is not None}
         )
 
     def as_dict(self) -> dict[str, Any]:
@@ -188,9 +184,7 @@ class Zone(OutputObject):
     y1: float
 
     def as_area(self) -> Area:
-        return Area(
-            self.x0, self.y0, self.x0, self.y1, self.x1, self.y1, self.x1, self.y0
-        )
+        return Area(self.x0, self.y0, self.x0, self.y1, self.x1, self.y1, self.x1, self.y0)
 
 
 @dataclass
@@ -256,9 +250,9 @@ class MapData:
     def __init__(self, calibration_center: float = 0, calibration_diff: float = 0):
         self._calibration_center = calibration_center
         self._calibration_diff = calibration_diff
-        self.blocks = None
+        self.blocks: bytes | None = None
         self.charger: Point | None = None
-        self.goto: list[Point] | None = None
+        self.goto: Point | None = None
         self.goto_path: Path | None = None
         self.image: ImageData | None = None
         self.no_go_areas: list[Area] | None = None
@@ -280,6 +274,7 @@ class MapData:
         self.zones: list[Zone] | None = None
         self.cleaned_rooms: set[int] | None = None
         self.map_name: str | None = None
+        self.additional_parameters: dict[str, Any] = dict()
 
     def calibration(self) -> CalibrationPoints | None:
         if self.image is None or self.image.is_empty:
@@ -296,9 +291,7 @@ class MapData:
                 self._calibration_center + self._calibration_diff * 10,
             ),
         ]:
-            img_point = point.to_img(self.image.dimensions).rotated(
-                self.image.dimensions
-            )
+            img_point = point.to_img(self.image.dimensions).rotated(self.image.dimensions)
             calibration_points.append(
                 {
                     "vacuum": {"x": point.x, "y": point.y},

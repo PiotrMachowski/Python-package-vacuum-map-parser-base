@@ -1,18 +1,11 @@
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
-[project]
+[tool.poetry]
 name = "vacuum-map-parser-base"
 # The version is set by GH action on release
 version = "0.0.0"
-license = { text = "Apache-2.0" }
+license = "Apache-2.0"
 description = "Common code for vacuum map parsers"
 readme = "README.md"
-requires-python = ">=3.11"
-authors = [
-    { name = "Piotr Machowski", email = "piotr.machowski.dev@gmail.com" }
-]
+authors = ["Piotr Machowski <piotr.machowski.dev@gmail.com>"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -20,13 +13,59 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Topic :: Home Automation",
 ]
-dynamic = ["dependencies"]
+packages = [
+    { include = "vacuum_map_parser_base", from = "src" },
+]
 
-[project.urls]
+[tool.poetry.urls]
 "Homepage" = "https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-base"
 "Repository" = "https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-base"
 "Bug Tracker" = "https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-base/issues"
+"Changelog" = "https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-base/releases"
 
-[tool.setuptools.dynamic]
-dependencies = { file = ["requirements.txt"] }
-optional-dependencies = {dev = { file = ["requirements-dev.txt"] }}
+[tool.poetry.dependencies]
+python = "^3.11"
+Pillow = "*"
+
+[tool.poetry.dev-dependencies]
+black = "*"
+mypy = "*"
+ruff = "*"
+isort = "*"
+pylint = "*"
+types-Pillow = "*"
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.mypy]
+platform = "linux"
+
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+no_implicit_reexport = true
+strict_optional = true
+warn_incomplete_stub = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[tool.pylint]
+disable = ["C0103", "C0116", "R0902", "R0903", "R0913", "R0914", "W0640"]
+max-line-length = 120
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
