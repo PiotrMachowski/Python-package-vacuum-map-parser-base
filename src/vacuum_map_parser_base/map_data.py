@@ -274,7 +274,7 @@ class MapData:
         self.zones: list[Zone] | None = None
         self.cleaned_rooms: set[int] | None = None
         self.map_name: str | None = None
-        self.additional_parameters: dict[str, Any] = dict()
+        self.additional_parameters: dict[str, Any] = {}
 
     def calibration(self) -> CalibrationPoints | None:
         if self.image is None or self.image.is_empty:
