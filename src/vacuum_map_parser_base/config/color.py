@@ -117,8 +117,8 @@ class ColorsPalette:
             self._overriden_room_colors = {}
         else:
             self._overriden_room_colors = room_colors
-        self._cached_colors = {}
-        self._cached_room_colors = {}
+        self._cached_colors: dict[SupportedColor, Color] = {}
+        self._cached_room_colors: dict[int, Color] = {}
 
     def get_color(self, color_name: SupportedColor) -> Color:
         if color_name not in self._cached_colors:
