@@ -117,24 +117,35 @@ class ColorsPalette:
             self._overriden_room_colors = {}
         else:
             self._overriden_room_colors = room_colors
+        self._cached_colors: dict[SupportedColor, Color] = {}
+        self._cached_room_colors: dict[int, Color] = {}
 
     def get_color(self, color_name: SupportedColor) -> Color:
-        return self._overriden_colors.get(
-            color_name,
-            ColorsPalette.COLORS.get(color_name, ColorsPalette.COLORS.get(SupportedColor.UNKNOWN, (0, 0, 0))),
-        )
+        if color_name not in self._cached_colors:
+            if color_name in self._overriden_colors:
+                val = self._overriden_colors[color_name]
+            elif color_name in ColorsPalette.COLORS:
+                val = ColorsPalette.COLORS[color_name]
+            elif SupportedColor.UNKNOWN in ColorsPalette.COLORS:
+                val = ColorsPalette.COLORS[SupportedColor.UNKNOWN]
+            else:
+                val = (0,0,0)
+            self._cached_colors[color_name] = val
+        return self._cached_colors[color_name]
 
     def get_room_color(self, room_id: str | int) -> Color:
         if isinstance(room_id, str):
             room_id = int(room_id)
-        if room_id > len(ColorsPalette.ROOM_COLORS):
-            room_id = (room_id - 1) % len(ColorsPalette.ROOM_COLORS) + 1
+        if room_id not in self._cached_room_colors:
+            if room_id > len(ColorsPalette.ROOM_COLORS):
+                room_id = (room_id - 1) % len(ColorsPalette.ROOM_COLORS) + 1
 
-        key = str(room_id)
-        return self._overriden_room_colors.get(
-            key,
-            ColorsPalette.ROOM_COLORS.get(
-                key,
-                ColorsPalette.ROOM_COLORS.get(str(self._random.randint(1, 16)), (0, 0, 0)),
-            ),
-        )
+            key = str(room_id)
+            if key in self._overriden_room_colors:
+                val = self._overriden_room_colors[key]
+            elif key in ColorsPalette.ROOM_COLORS:
+                val = ColorsPalette.ROOM_COLORS[key]
+            else:
+                val = ColorsPalette.ROOM_COLORS.get(str(self._random.randint(1, 16)), (0, 0, 0))
+            self._cached_room_colors[room_id] = val
+        return self._cached_room_colors[room_id]
