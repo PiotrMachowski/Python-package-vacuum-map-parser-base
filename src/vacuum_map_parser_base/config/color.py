@@ -119,10 +119,13 @@ class ColorsPalette:
             self._overriden_room_colors = room_colors
 
     def get_color(self, color_name: SupportedColor) -> Color:
-        return self._overriden_colors.get(
-            color_name,
-            ColorsPalette.COLORS.get(color_name, ColorsPalette.COLORS.get(SupportedColor.UNKNOWN, (0, 0, 0))),
-        )
+        if color_name in self._overriden_colors:
+            return self._overriden_colors[color_name]
+        elif color_name in ColorsPalette.COLORS:
+                return ColorsPalette.COLORS[color_name]
+        elif SupportedColor.UNKNOWN in ColorsPalette.COLORS:
+            return ColorsPalette.COLORS[SupportedColor.UNKNOWN]
+        return (0,0,0)
 
     def get_room_color(self, room_id: str | int) -> Color:
         if isinstance(room_id, str):
@@ -131,10 +134,8 @@ class ColorsPalette:
             room_id = (room_id - 1) % len(ColorsPalette.ROOM_COLORS) + 1
 
         key = str(room_id)
-        return self._overriden_room_colors.get(
-            key,
-            ColorsPalette.ROOM_COLORS.get(
-                key,
-                ColorsPalette.ROOM_COLORS.get(str(self._random.randint(1, 16)), (0, 0, 0)),
-            ),
-        )
+        if key in self._overriden_room_colors:
+            return self._overriden_room_colors[key]
+        if key in ColorsPalette.ROOM_COLORS:
+            return ColorsPalette.ROOM_COLORS[key]
+        return ColorsPalette.ROOM_COLORS.get(str(self._random.randint(1, 16)), (0, 0, 0))
