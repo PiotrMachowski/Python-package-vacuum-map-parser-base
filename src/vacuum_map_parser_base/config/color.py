@@ -117,8 +117,14 @@ class ColorsPalette:
             self._overriden_room_colors = {}
         else:
             self._overriden_room_colors = room_colors
+        # Create it once so that it can be accessed in get_color in the future
         self._cached_colors: dict[SupportedColor, Color] = {}
-        self._cached_room_colors: dict[int, Color] = {}
+        for color in self.COLORS:
+            self.get_color(color)
+        # Create it once so that it can be accessed in get_room_color in the future
+        self._cached_room_colors: dict[int | str, Color] = {}
+        for room in self.ROOM_COLORS:
+            self.get_room_color(room)
 
     def get_color(self, color_name: SupportedColor) -> Color:
         if color_name not in self._cached_colors:
@@ -129,14 +135,18 @@ class ColorsPalette:
             elif SupportedColor.UNKNOWN in ColorsPalette.COLORS:
                 val = ColorsPalette.COLORS[SupportedColor.UNKNOWN]
             else:
-                val = (0,0,0)
+                val = (0, 0, 0)
             self._cached_colors[color_name] = val
         return self._cached_colors[color_name]
 
+    @property
+    def cached_colors(self) -> dict[SupportedColor, Color]:
+        return self._cached_colors
+
     def get_room_color(self, room_id: str | int) -> Color:
-        if isinstance(room_id, str):
-            room_id = int(room_id)
         if room_id not in self._cached_room_colors:
+            if isinstance(room_id, str):
+                room_id = int(room_id)
             if room_id > len(ColorsPalette.ROOM_COLORS):
                 room_id = (room_id - 1) % len(ColorsPalette.ROOM_COLORS) + 1
 
@@ -147,5 +157,11 @@ class ColorsPalette:
                 val = ColorsPalette.ROOM_COLORS[key]
             else:
                 val = ColorsPalette.ROOM_COLORS.get(str(self._random.randint(1, 16)), (0, 0, 0))
-            self._cached_room_colors[room_id] = val
+            # ensure we have both str and int in the dictionary so we don't have to always convert.
+            self._cached_room_colors[str(room_id)] = val
+            self._cached_room_colors[int(room_id)] = val
         return self._cached_room_colors[room_id]
+
+    @property
+    def cached_room_colors(self) -> dict[str | int, Color]:
+        return self._cached_room_colors
