@@ -165,7 +165,7 @@ class ImageGenerator:
             for wall in walls:
                 draw.line(wall.to_img(image.dimensions).as_list(), color, width=2)
 
-        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(color))
+        ImageGenerator._draw_on_new_layer(image, draw_func, ImageGenerator._use_transparency(color))
 
     def _draw_zones(self, map_data: MapData) -> None:
         if map_data.zones is None or map_data.image is None:
