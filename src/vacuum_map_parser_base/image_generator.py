@@ -165,7 +165,7 @@ class ImageGenerator:
             for wall in walls:
                 draw.line(wall.to_img(image.dimensions).as_list(), color, width=2)
 
-        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(color))
+        ImageGenerator._draw_on_new_layer(image, draw_func, ImageGenerator._use_transparency(color))
 
     def _draw_zones(self, map_data: MapData) -> None:
         if map_data.zones is None or map_data.image is None:
@@ -331,7 +331,7 @@ class ImageGenerator:
             coords = [x - r2, y - r2, x + r2, y + r2]
             draw.ellipse(coords, outline=half_color, fill=half_color)
 
-        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(outline, fill))
+        ImageGenerator._draw_on_new_layer(image, draw_func, ImageGenerator._use_transparency(outline, fill))
 
     @staticmethod
     def _draw_circle(image: ImageData, center: Point, r: float, outline: Color, fill: Color) -> None:
@@ -340,7 +340,7 @@ class ImageGenerator:
             coords = [point.x - r, point.y - r, point.x + r, point.y + r]
             draw.ellipse(coords, outline=outline, fill=fill)
 
-        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(outline, fill))
+        ImageGenerator._draw_on_new_layer(image, draw_func, ImageGenerator._use_transparency(outline, fill))
 
     @staticmethod
     def _draw_pieslice(image: ImageData, position: Point, r: float, outline: Color, fill: Color) -> None:
@@ -350,7 +350,7 @@ class ImageGenerator:
             coords = (point.x - r, point.y - r), (point.x + r, point.y + r)
             draw.pieslice(coords, angle + 90, angle - 90, outline=outline, fill=fill)
 
-        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(outline, fill))
+        ImageGenerator._draw_on_new_layer(image, draw_func, ImageGenerator._use_transparency(outline, fill))
 
     @staticmethod
     def _draw_areas(image: ImageData, areas: list[Area], fill: Color, outline: Color) -> None:
@@ -364,28 +364,26 @@ class ImageGenerator:
             def draw_func(draw: ImageDrawType) -> None:
                 draw.polygon(polygon, fill, outline)
 
-            ImageGenerator._draw_on_new_layer(image, draw_func, 1, use_transparency)
+            ImageGenerator._draw_on_new_layer(image, draw_func, use_transparency)
 
     def _draw_path(self, image: ImageData, path: Path, path_width: float, color: Color) -> None:
         if len(path.path) < 1:
             return
 
-        scale = self._image_config.scale
-
         def draw_func(draw: ImageDrawType) -> None:
             for current_path in path.path:
                 if len(current_path) > 1:
-                    s = current_path[0].to_img(image.dimensions) * scale
+                    s = current_path[0].to_img(image.dimensions)
                     coords = None
                     for point in current_path[1:]:
-                        e = point.to_img(image.dimensions) * scale
+                        e = point.to_img(image.dimensions)
                         draw.line(
                             [s.x, s.y, e.x, e.y],
-                            width=int(scale * path_width),
+                            width=int(path_width),
                             fill=color,
                         )
                         if path_width > 4:
-                            r = scale * path_width / 2
+                            r = path_width / 2
                             if not coords:
                                 coords = (s.x - r, s.y - r), (s.x + r, s.y + r)
                                 draw.pieslice(coords, 0, 360, outline=color, fill=color)
@@ -393,7 +391,7 @@ class ImageGenerator:
                             draw.pieslice(coords, 0, 360, outline=color, fill=color)
                         s = e
 
-        ImageGenerator._draw_on_new_layer(image, draw_func, scale, ImageGenerator._use_transparency(color))
+        ImageGenerator._draw_on_new_layer(image, draw_func, ImageGenerator._use_transparency(color))
 
     @staticmethod
     def _draw_text(
@@ -419,25 +417,21 @@ class ImageGenerator:
                 w, h = r - l, b - t
                 draw.text((x - w / 2, y - h / 2), text, font=font, fill=color)
 
-        ImageGenerator._draw_on_new_layer(image, draw_func, 1, ImageGenerator._use_transparency(color))
+        ImageGenerator._draw_on_new_layer(image, draw_func, ImageGenerator._use_transparency(color))
 
     @staticmethod
     def _draw_on_new_layer(
         image: ImageData,
         draw_function: Callable[[ImageDrawType], None],
-        scale: float = 1,
         use_transparency: bool = False,
     ) -> None:
-        if scale == 1 and not use_transparency:
+        if use_transparency:
             draw = ImageDraw.Draw(image.data, "RGBA")
             draw_function(draw)
         else:
-            size = (int(image.data.size[0] * scale), int(image.data.size[1] * scale))
-            layer = Image.new("RGBA", size, (255, 255, 255, 0))
+            layer = Image.new("RGBA", image.data.size, (255, 255, 255, 0))
             draw = ImageDraw.Draw(layer, "RGBA")
             draw_function(draw)
-            if scale != 1:
-                layer = layer.resize(image.data.size, resample=Resampling.BOX)
             ImageGenerator._draw_layer_with_alpha(image, layer)
 
     @staticmethod
