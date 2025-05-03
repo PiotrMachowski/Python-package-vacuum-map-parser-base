@@ -24,6 +24,7 @@ class Sizes:
         Size.PATH_WIDTH: 1,
         Size.IGNORED_OBSTACLE_RADIUS: 3,
         Size.IGNORED_OBSTACLE_WITH_PHOTO_RADIUS: 3,
+        Size.MOP_PATH_WIDTH: 16,
         Size.OBSTACLE_RADIUS: 3,
         Size.OBSTACLE_WITH_PHOTO_RADIUS: 3,
         Size.CHARGER_RADIUS: 6,
