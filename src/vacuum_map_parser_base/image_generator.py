@@ -232,6 +232,8 @@ class ImageGenerator:
                 self._draw_text(map_data.image, room.name, point.x, point.y, color)
 
     def _rotate(self, image: ImageData) -> None:
+        if image.dimensions.rotation == 0:
+            return
         if image.dimensions.rotation == 90:
             image.data = image.data.transpose(Transpose.ROTATE_90)
         elif image.dimensions.rotation == 180:
