@@ -428,7 +428,7 @@ class ImageGenerator:
         draw_function: Callable[[ImageDrawType], None],
         use_transparency: bool = False,
     ) -> None:
-        if use_transparency:
+        if not use_transparency:
             draw = ImageDraw.Draw(image.data, "RGBA")
             draw_function(draw)
         else:
