@@ -106,7 +106,7 @@ class ImageDimensions:
 class ImageData(OutputObject):
     """Image data."""
 
-    def __init__(
+    def __init__( # pylint: disable=R0917
         self,
         size: int,
         top: int,

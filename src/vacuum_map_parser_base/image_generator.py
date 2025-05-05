@@ -22,7 +22,7 @@ _LOGGER = logging.getLogger(__name__)
 class ImageGenerator:
     """Generates a map image."""
 
-    def __init__(
+    def __init__( # pylint: disable=R0917
         self,
         palette: ColorsPalette,
         sizes: Sizes,
@@ -229,7 +229,7 @@ class ImageGenerator:
             p = room.point()
             if p is not None and room.name is not None:
                 point = p.to_img(map_data.image.dimensions)
-                self._draw_text(map_data.image, room.name, point.x, point.y, color)
+                self._draw_text(image=map_data.image, text=room.name, x=point.x, y=point.y, color=color)
 
     def _rotate(self, image: ImageData) -> None:
         if image.dimensions.rotation == 0:
@@ -254,13 +254,13 @@ class ImageGenerator:
             x = text_config.x * image.data.size[0] / 100
             y = text_config.y * image.data.size[1] / 100
             ImageGenerator._draw_text(
-                image,
-                text_config.text,
-                x,
-                y,
-                text_config.color,
-                text_config.font,
-                text_config.font_size,
+                image=image,
+                text=text_config.text,
+                x=x,
+                y=y,
+                color=text_config.color,
+                font_file=text_config.font,
+                font_size=text_config.font_size,
             )
 
     @staticmethod
@@ -397,6 +397,7 @@ class ImageGenerator:
 
     @staticmethod
     def _draw_text(
+        *,
         image: ImageData,
         text: str,
         x: float,
