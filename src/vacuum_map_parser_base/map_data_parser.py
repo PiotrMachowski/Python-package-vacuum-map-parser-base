@@ -18,7 +18,7 @@ _LOGGER = logging.getLogger(__name__)
 class MapDataParser(ABC):
     """Base class for a map parser."""
 
-    def __init__(
+    def __init__( # pylint: disable=R0917
         self,
         palette: ColorsPalette,
         sizes: Sizes,

@@ -69,6 +69,7 @@ class ColorsPalette:
         SupportedColor.NO_CARPET_ZONES_OUTLINE: (255, 0, 0),
         SupportedColor.NO_GO_ZONES: (255, 33, 55, 127),
         SupportedColor.NO_GO_ZONES_OUTLINE: (255, 0, 0),
+        SupportedColor.MOP_PATH: (255, 255, 255, 0x48),
         SupportedColor.NO_MOPPING_ZONES: (163, 130, 211, 127),
         SupportedColor.NO_MOPPING_ZONES_OUTLINE: (163, 130, 211),
         SupportedColor.CHARGER: (0x66, 0xFE, 0xDA, 0x7F),
@@ -101,6 +102,22 @@ class ColorsPalette:
         "14": (82, 190, 128),
         "15": (72, 201, 176),
         "16": (165, 105, 189),
+        "17": (240, 178, 122),
+        "18": (133, 193, 233),
+        "19": (217, 136, 128),
+        "20": (52, 152, 219),
+        "21": (205, 97, 85),
+        "22": (243, 156, 18),
+        "23": (88, 214, 141),
+        "24": (245, 176, 65),
+        "25": (252, 212, 81),
+        "26": (72, 201, 176),
+        "27": (84, 153, 199),
+        "28": (133, 193, 233),
+        "29": (245, 176, 65),
+        "30": (82, 190, 128),
+        "31": (72, 201, 176),
+        "32": (165, 105, 189),
     }
 
     def __init__(
@@ -110,13 +127,13 @@ class ColorsPalette:
     ) -> None:
         self._random = Random()
         if colors_dict is None:
-            self._overriden_colors = {}
+            self._overridden_colors = {}
         else:
-            self._overriden_colors = colors_dict
+            self._overridden_colors = colors_dict
         if room_colors is None:
-            self._overriden_room_colors = {}
+            self._overridden_room_colors = {}
         else:
-            self._overriden_room_colors = room_colors
+            self._overridden_room_colors = room_colors
         # Create it once so that it can be accessed in get_color in the future
         self._cached_colors: dict[SupportedColor, Color] = {}
         for color in self.COLORS:
@@ -128,8 +145,8 @@ class ColorsPalette:
 
     def get_color(self, color_name: SupportedColor) -> Color:
         if color_name not in self._cached_colors:
-            if color_name in self._overriden_colors:
-                val = self._overriden_colors[color_name]
+            if color_name in self._overridden_colors:
+                val = self._overridden_colors[color_name]
             elif color_name in ColorsPalette.COLORS:
                 val = ColorsPalette.COLORS[color_name]
             elif SupportedColor.UNKNOWN in ColorsPalette.COLORS:
@@ -151,8 +168,8 @@ class ColorsPalette:
                 room_id = (room_id - 1) % len(ColorsPalette.ROOM_COLORS) + 1
 
             key = str(room_id)
-            if key in self._overriden_room_colors:
-                val = self._overriden_room_colors[key]
+            if key in self._overridden_room_colors:
+                val = self._overridden_room_colors[key]
             elif key in ColorsPalette.ROOM_COLORS:
                 val = ColorsPalette.ROOM_COLORS[key]
             else:
