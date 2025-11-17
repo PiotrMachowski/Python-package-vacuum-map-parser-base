@@ -25,6 +25,7 @@ Available implementations:
 * [`vacuum-map-parser-viomi`](https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-viomi)
 * [`vacuum-map-parser-roidmi`](https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-roidmi)
 * [`vacuum-map-parser-dreame`](https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-dreame)
+* [`vacuum-map-parser-ijai`](https://github.com/maksp86/Python-package-vacuum-map-parser-ijai)
 
 ## Installation
 
