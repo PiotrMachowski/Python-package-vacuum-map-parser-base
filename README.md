@@ -26,6 +26,7 @@ Available implementations:
 * [`vacuum-map-parser-roidmi`](https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-roidmi)
 * [`vacuum-map-parser-dreame`](https://github.com/PiotrMachowski/Python-package-vacuum-map-parser-dreame)
 * [`vacuum-map-parser-ijai`](https://github.com/maksp86/Python-package-vacuum-map-parser-ijai)
+* [`vacuum-map-parser-xiaomi`](https://github.com/aronkahrs-us/Python-package-vacuum-map-parser-xiaomi)
 
 ## Installation
 
