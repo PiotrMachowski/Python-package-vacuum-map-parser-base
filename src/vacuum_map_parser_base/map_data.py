@@ -197,9 +197,9 @@ class Room(Zone):
     pos_y: float | None = None
 
     def point(self) -> Point | None:
-        if self.pos_x is not None and self.pos_y is not None and self.name is not None:
+        if self.pos_x is not None and self.pos_y is not None:
             return Point(self.pos_x, self.pos_y)
-        return None
+        return Point((self.x0 + self.x1) / 2, (self.y0 + self.y1) / 2)
 
 
 @dataclass
