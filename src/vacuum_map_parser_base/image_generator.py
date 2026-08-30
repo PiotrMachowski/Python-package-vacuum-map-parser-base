@@ -227,9 +227,10 @@ class ImageGenerator:
         color = self._get_color(SupportedColor.ROOM_NAMES)
         for room in map_data.rooms.values():
             p = room.point()
-            if p is not None and room.name is not None:
+            if p is not None:
                 point = p.to_img(map_data.image.dimensions)
-                self._draw_text(image=map_data.image, text=room.name, x=point.x, y=point.y, color=color)
+                label = room.name if room.name is not None else str(room.number)
+                self._draw_text(image=map_data.image, text=label, x=point.x, y=point.y, color=color)
 
     def _rotate(self, image: ImageData) -> None:
         if image.dimensions.rotation == 0:
